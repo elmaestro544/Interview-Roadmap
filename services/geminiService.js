@@ -1,8 +1,6 @@
-
 import { GoogleGenAI, Modality, Type } from "@google/genai";
 
-// Mandated initialization: Use process.env.API_KEY directly.
-// The environment is expected to provide this variable.
+// Initialize AI client using the global process.env.API_KEY provided by env.js
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const MODEL_TEXT = 'gemini-3-flash-preview';
@@ -90,7 +88,6 @@ export const generateSuggestedAnswer = async (question, jobDesc, resume, languag
             model: MODEL_TEXT,
             contents: prompt,
         });
-        // Post-process to strip any remaining markdown characters
         return response.text.replace(/[*#_~`>]/g, '').trim();
     });
 };

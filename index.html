@@ -1,10 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interview Roadmap</title>
+    <!-- Load Environment Variables First -->
+    <script src="env.js"></script>
     <script>
         (function() {
             var theme = localStorage.getItem('theme') || 'dark';
@@ -70,14 +71,6 @@
             background: rgba(239, 68, 68, 0.6);
         }
 
-        /* Ken Burns animations for interview visuals */
-        @keyframes ken-burns-in {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: .5; }
@@ -101,7 +94,6 @@
         }
       }
       
-      // Setup PDF.js worker
       if (window.pdfjsLib) {
           window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       }

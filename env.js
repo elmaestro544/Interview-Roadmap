@@ -1,4 +1,3 @@
-
 // This file is for environment variable configuration.
 // It serves as a runtime fallback if the build tool (Vite/Coolify) hasn't injected variables.
 
@@ -14,12 +13,9 @@ window.process.env = {
   //    sed -i "s|__VITE_SUPABASE_ANON_KEY__|$VITE_SUPABASE_ANON_KEY|g" env.js
 
   // --- Google Gemini ---
-  // Primary API Key for Chat, Research, Analysis
+  // The SDK strictly uses process.env.API_KEY. We map both for redundancy.
   VITE_API_KEY: '__VITE_API_KEY__', 
-
-  // --- OpenAI ---
-  // Optional: For DALL-E Image Generation
-  VITE_OPENAI_API_KEY: '__VITE_OPENAI_API_KEY__',
+  API_KEY: '__VITE_API_KEY__', 
 
   // --- Supabase ---
   // Required for Authentication & Database
