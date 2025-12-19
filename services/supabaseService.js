@@ -37,13 +37,15 @@ export const onAuthStateChange = (callback) => {
 
 export const saveInterview = async (userId, data) => {
     if (!supabase) return;
-    const { jobDesc, resume, history, analysis } = data;
+    const { jobDesc, resume, history, analysis, questions, duration } = data;
+    
     return await supabase.from('interviews').insert([{
         user_id: userId,
         job_desc: jobDesc,
         resume: resume,
         transcript: history,
-        analysis: analysis,
+        duration: duration,
+        analysis: { ...analysis, tailoredQuestions: questions },
         created_at: new Date().toISOString()
     }]);
 };

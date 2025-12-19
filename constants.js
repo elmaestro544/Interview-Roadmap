@@ -41,6 +41,7 @@ export const i18n = {
     speaking: "Interviewer is speaking...",
     suggestedAnswer: "AI Suggested Answer",
     generatingAnswer: "Generating ideal response...",
+    duration: "Duration",
     // Review
     reviewTitle: "Performance Analysis",
     scoreLabel: "Overall Readiness",
@@ -48,6 +49,7 @@ export const i18n = {
     strengths: "Strengths",
     improvements: "Areas for Improvement",
     saveSuccess: "Session saved to your profile!",
+    sessionDuration: "Session Duration",
     // History
     historyTitle: "Interview History",
     noHistory: "No past interviews found. Start your first assessment!",
@@ -97,6 +99,7 @@ export const i18n = {
     speaking: "المحاور يتحدث...",
     suggestedAnswer: "الإجابة المقترحة من الذكاء الاصطناعي",
     generatingAnswer: "جاري إنشاء الإجابة المثالية...",
+    duration: "المدة",
     // Review
     reviewTitle: "تحليل الأداء",
     scoreLabel: "الجاهزية العامة",
@@ -104,6 +107,7 @@ export const i18n = {
     strengths: "نقاط القوة",
     improvements: "مجالات التحسين",
     saveSuccess: "تم حفظ الجلسة في ملفك الشخصي!",
+    sessionDuration: "مدة الجلسة",
     // History
     historyTitle: "سجل المقابلات",
     noHistory: "لم يتم العثور على مقابلات سابقة. ابدأ تقييمك الأول!",

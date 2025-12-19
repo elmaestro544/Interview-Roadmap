@@ -7,13 +7,14 @@ import MockInterviewView from './components/MockInterviewView.js';
 import ReviewView from './components/ReviewView.js';
 import HistoryView from './components/HistoryView.js';
 import AuthModal from './components/AuthModal.js';
-import { Logo, SunIcon, MoonIcon, UserIcon } from './components/Shared.js';
+import { Logo, SunIcon, MoonIcon, UserIcon, TextSizeIcon } from './components/Shared.js';
 import * as supabase from './services/supabaseService.js';
 
 const App = () => {
     const [view, setView] = useState(AppView.Setup);
     const [language, setLanguage] = useState(Language.EN);
     const [theme, setTheme] = useState('dark');
+    const [fontSize, setFontSize] = useState(100); // Percentage
     const [user, setUser] = useState(null);
     const [isAuthModalOpen, setAuthModalOpen] = useState(false);
     const [interviewData, setInterviewData] = useState({
@@ -46,6 +47,10 @@ const App = () => {
 
     const t = i18n[language];
 
+    const changeFontSize = (delta) => {
+        setFontSize(prev => Math.min(150, Math.max(80, prev + delta)));
+    };
+
     const renderView = () => {
         const props = { language, setView, interviewData, setInterviewData, user };
         switch (view) {
@@ -61,7 +66,8 @@ const App = () => {
     const isFullWidthView = view === AppView.MockInterview;
 
     return React.createElement('div', {
-        className: "min-h-screen text-slate-900 dark:text-white font-sans transition-colors duration-300 bg-transparent"
+        className: "min-h-screen text-slate-900 dark:text-white font-sans transition-colors duration-300 bg-transparent",
+        style: { fontSize: `${fontSize}%` }
     },
         React.createElement('header', {
             className: "sticky top-0 z-50 bg-white/40 dark:bg-dark-bg/40 backdrop-blur-xl border-b border-slate-200/50 dark:border-white/5"
@@ -80,10 +86,24 @@ const App = () => {
                         className: `text-sm font-medium hover:text-brand-red transition-colors ${view === AppView.History ? 'text-brand-red' : 'text-slate-500'}`
                     }, t.navHistory)
                 ),
-                React.createElement('div', { className: "flex items-center gap-4" },
+                React.createElement('div', { className: "flex items-center gap-3 md:gap-4" },
+                    // Font Size Controls
+                    React.createElement('div', { className: "hidden sm:flex items-center bg-slate-200/50 dark:bg-white/5 rounded-full px-2 py-1" },
+                        React.createElement('button', {
+                            onClick: () => changeFontSize(-10),
+                            className: "p-1.5 hover:text-brand-red transition-colors",
+                            title: "Decrease Font"
+                        }, "A-"),
+                        React.createElement('div', { className: "mx-1 text-slate-400" }, React.createElement(TextSizeIcon, { className: "w-4 h-4" })),
+                        React.createElement('button', {
+                            onClick: () => changeFontSize(10),
+                            className: "p-1.5 hover:text-brand-red transition-colors",
+                            title: "Increase Font"
+                        }, "A+")
+                    ),
                     React.createElement('button', {
                         onClick: () => setLanguage(l => l === Language.EN ? Language.AR : Language.EN),
-                        className: "text-sm font-semibold hover:text-brand-red transition-colors"
+                        className: "text-sm font-semibold hover:text-brand-red transition-colors px-2"
                     }, language === Language.EN ? 'العربية' : 'English'),
                     React.createElement('button', {
                         onClick: () => setTheme(t => t === 'dark' ? 'light' : 'dark'),

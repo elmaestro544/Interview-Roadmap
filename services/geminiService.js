@@ -1,3 +1,4 @@
+
 import { GoogleGenAI, Modality, Type } from "@google/genai";
 
 // Initialize AI client using the global process.env.API_KEY provided by env.js
@@ -5,6 +6,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const MODEL_TEXT = 'gemini-3-flash-preview';
 const MODEL_AUDIO = 'gemini-2.5-flash-native-audio-preview-09-2025';
+const MODEL_TTS = 'gemini-2.5-flash-preview-tts';
 
 // Robust retry logic for rate limits and resource exhaustion
 const withRetry = async (fn, maxRetries = 5) => {
@@ -46,7 +48,15 @@ export const generateInterviewQuestions = async (jobDesc, resume, language) => {
         Job Description: ${jobDesc}
         Resume: ${resume}
         Language: ${language === 'ar' ? 'Arabic' : 'English'}
-        Task: Generate 5 relevant interview questions and tips. Result as JSON.
+        Task: Generate 5 relevant interview questions, tips, and a sample suggested answer for each. 
+        
+        CRITICAL FORMATTING FOR suggestedAnswer:
+        - Use bullet points (•) for organization.
+        - Keep it concise (under 80 words).
+        - Tailor it to the resume provided.
+        - HIGHLIGHT key points or specific actions using **bold** markdown (e.g., **Developed a system**).
+        - Must be natural and spoken-style.
+        Result as JSON.
     `;
     return withRetry(async () => {
         const response = await ai.models.generateContent({
@@ -60,9 +70,10 @@ export const generateInterviewQuestions = async (jobDesc, resume, language) => {
                         type: Type.OBJECT,
                         properties: {
                             question: { type: Type.STRING },
-                            tip: { type: Type.STRING }
+                            tip: { type: Type.STRING },
+                            suggestedAnswer: { type: Type.STRING, description: "A high-quality, bullet-pointed sample answer with **bold** highlights." }
                         },
-                        required: ["question", "tip"]
+                        required: ["question", "tip", "suggestedAnswer"]
                     }
                 }
             }
@@ -76,19 +87,42 @@ export const generateSuggestedAnswer = async (question, jobDesc, resume, languag
         Context: Job Description: ${jobDesc}, Resume: ${resume}
         Question: ${question}
         Language: ${language === 'ar' ? 'Arabic' : 'English'}
-        Task: Provide ONLY the text of a perfect, concise spoken response the candidate should give. 
-        CRITICAL CONSTRAINTS:
-        - DO NOT include markdown like "**", "###", or "***".
-        - DO NOT include section titles or intros like "Here is the answer".
-        - DO NOT mention the STAR method by name.
-        - RETURN ONLY THE PLAIN TEXT OF THE SPOKEN ANSWER.
+        Task: Provide a perfect, concise spoken response the candidate should give.
+        
+        CRITICAL FORMATTING:
+        - USE BULLET POINTS (•) to organize the answer points.
+        - HIGHLIGHT THE KEY ACTION OR POINT in each bullet using **bold** markdown.
+        - Keep it under 100 words total.
+        - DO NOT include headings like "###".
+        - RETURN THE PLAIN TEXT OF THE BULLETED ANSWER WITH BOLD HIGHLIGHTS.
     `;
     return withRetry(async () => {
         const response = await ai.models.generateContent({
             model: MODEL_TEXT,
             contents: prompt,
         });
-        return response.text.replace(/[*#_~`>]/g, '').trim();
+        // Clean up everything except basic bullet points and bolding
+        return response.text.replace(/[#_~`>]/g, '').trim();
+    });
+};
+
+export const generateSpeech = async (text) => {
+    // Clean text for TTS (remove markdown symbols)
+    const cleanText = text.replace(/\*\*/g, '');
+    return withRetry(async () => {
+        const response = await ai.models.generateContent({
+            model: MODEL_TTS,
+            contents: [{ parts: [{ text: cleanText }] }],
+            config: {
+                responseModalities: [Modality.AUDIO],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: 'Zephyr' },
+                    },
+                },
+            },
+        });
+        return response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
     });
 };
 

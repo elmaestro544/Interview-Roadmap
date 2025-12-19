@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { i18n, AppView } from '../constants.js';
 import * as api from '../services/geminiService.js';
-import { Spinner, StopIcon, MicrophoneIcon, CheckIcon } from './Shared.js';
+import { Spinner, StopIcon, MicrophoneIcon, CheckIcon, HighlightText } from './Shared.js';
 
 const MockInterviewView = ({ language, setView, interviewData, setInterviewData }) => {
     const t = i18n[language];
@@ -11,6 +11,7 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
     const [transcript, setTranscript] = useState([]);
     const [suggestedAnswer, setSuggestedAnswer] = useState('');
     const [isGeneratingAnswer, setIsGeneratingAnswer] = useState(false);
+    const [elapsedTime, setElapsedTime] = useState(0);
     
     const sessionRef = useRef(null);
     const audioCtxRef = useRef(null);
@@ -42,6 +43,24 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
         audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
         return cleanup;
     }, [cleanup]);
+
+    useEffect(() => {
+        let interval;
+        if (isActive) {
+            interval = setInterval(() => {
+                setElapsedTime(prev => prev + 1);
+            }, 1000);
+        } else {
+            setElapsedTime(0);
+        }
+        return () => clearInterval(interval);
+    }, [isActive]);
+
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
 
     const fetchSuggestedAnswer = async (question) => {
         if (!question || question === lastFinalizedQuestionRef.current) return;
@@ -167,7 +186,7 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
     };
 
     const handleEnd = () => {
-        setInterviewData(prev => ({ ...prev, history: transcript }));
+        setInterviewData(prev => ({ ...prev, history: transcript, duration: elapsedTime }));
         cleanup();
         setView(AppView.Review);
     };
@@ -184,9 +203,15 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
                 React.createElement('div', { className: "bg-white dark:bg-[#0F172A] rounded-[2.5rem] p-8 shadow-2xl border border-slate-200 dark:border-white/10 flex flex-col" },
                     React.createElement('div', { className: "flex justify-between items-center mb-8" },
                         React.createElement('h3', { className: "text-sm font-bold text-slate-400 uppercase tracking-widest" }, "LIVE INTERVIEW"),
-                        isActive && React.createElement('div', { className: "flex items-center gap-2" },
-                            React.createElement('div', { className: "w-2.5 h-2.5 bg-red-500 rounded-full animate-ping" }),
-                            React.createElement('span', { className: "text-xs font-black text-red-500" }, "SESSION ACTIVE")
+                        isActive && React.createElement('div', { className: "flex items-center gap-4" },
+                            React.createElement('div', { className: "flex items-center gap-2 bg-slate-100 dark:bg-white/5 px-3 py-1 rounded-full font-mono text-xs font-bold" },
+                                React.createElement('span', { className: "text-brand-red" }, "⏱"),
+                                formatTime(elapsedTime)
+                            ),
+                            React.createElement('div', { className: "flex items-center gap-2" },
+                                React.createElement('div', { className: "w-2.5 h-2.5 bg-red-500 rounded-full animate-ping" }),
+                                React.createElement('span', { className: "text-xs font-black text-red-500" }, "SESSION ACTIVE")
+                            )
                         )
                     ),
 
@@ -230,7 +255,7 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
                                 }`
                             },
                                 React.createElement('p', { className: "font-black mb-2 uppercase text-[10px] opacity-60 tracking-tighter" }, m.role === 'candidate' ? 'You' : 'Interviewer'),
-                                React.createElement('p', { className: "text-lg leading-relaxed font-medium" }, m.text)
+                                React.createElement('p', { className: "text-lg leading-relaxed font-medium whitespace-pre-wrap" }, m.text)
                             )
                         ))
                     )
@@ -251,9 +276,12 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
                         isGeneratingAnswer && !suggestedAnswer ? React.createElement('div', { className: "flex flex-col items-center justify-center h-full gap-6 text-slate-400" },
                             React.createElement('p', { className: "text-2xl italic font-medium animate-pulse" }, t.generatingAnswer)
                         ) : suggestedAnswer ? React.createElement('div', { 
-                            className: "bg-slate-50 dark:bg-brand-red/5 p-12 rounded-[2.5rem] border border-slate-200 dark:border-brand-red/10 text-slate-900 dark:text-slate-100 leading-relaxed text-3xl md:text-4xl shadow-inner font-bold animate-fade-in-up" 
+                            className: "bg-slate-50 dark:bg-brand-red/5 p-12 rounded-[2.5rem] border border-slate-200 dark:border-brand-red/10 text-slate-900 dark:text-slate-100 shadow-inner animate-fade-in-up" 
                         },
-                            suggestedAnswer
+                            React.createElement(HighlightText, { 
+                                text: suggestedAnswer, 
+                                className: "leading-relaxed text-2xl md:text-3xl font-bold" 
+                            })
                         ) : React.createElement('div', { className: "flex flex-col items-center justify-center h-full text-slate-400 text-center gap-10 px-10" },
                             React.createElement('div', { className: "w-24 h-24 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center text-5xl" }, "🧠"),
                             React.createElement('p', { className: "text-2xl font-medium italic max-w-md" }, "Listen to the interviewer's question. A masterful response will appear here instantly.")

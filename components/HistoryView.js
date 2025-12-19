@@ -25,12 +25,20 @@ const HistoryView = ({ language, setView, setInterviewData, user }) => {
         }
     }, [user]);
 
+    const formatTime = (seconds) => {
+        if (!seconds) return "00:00";
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
     const handleViewDetails = (item) => {
         setInterviewData({
             jobDesc: item.job_desc,
             resume: item.resume,
             history: item.transcript,
             analysis: item.analysis,
+            duration: item.duration || (item.analysis?.duration), // Fallback if stored differently
             questions: []
         });
         setView(AppView.Review);
@@ -52,14 +60,17 @@ const HistoryView = ({ language, setView, setInterviewData, user }) => {
                     key: item.id,
                     className: "bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex justify-between items-center shadow-md hover:border-brand-red transition-all"
                 },
-                    React.createElement('div', null,
+                    React.createElement('div', { className: "flex-grow pr-4" },
                         React.createElement('p', { className: "text-xs font-bold text-brand-red uppercase mb-1" }, new Date(item.created_at).toLocaleDateString(language, { dateStyle: 'long' })),
                         React.createElement('h3', { className: "text-xl font-bold truncate max-w-md" }, item.job_desc.substring(0, 60) + '...'),
-                        React.createElement('p', { className: "text-sm text-slate-500 mt-1" }, `Score: ${item.analysis?.score}%`)
+                        React.createElement('div', { className: "flex items-center gap-4 mt-1" },
+                            React.createElement('p', { className: "text-sm text-slate-500 font-semibold" }, `Score: ${item.analysis?.score}%`),
+                            item.duration && React.createElement('p', { className: "text-sm text-slate-400" }, `⏱ ${formatTime(item.duration)}`)
+                        )
                     ),
                     React.createElement('button', {
                         onClick: () => handleViewDetails(item),
-                        className: "bg-slate-200 dark:bg-white/5 py-2 px-6 rounded-full font-bold text-sm hover:bg-brand-red hover:text-white transition-all"
+                        className: "bg-slate-200 dark:bg-white/5 py-2 px-6 rounded-full font-bold text-sm hover:bg-brand-red hover:text-white transition-all flex-shrink-0"
                     }, t.viewDetails)
                 )
             ))

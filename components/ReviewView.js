@@ -42,6 +42,13 @@ const ReviewView = ({ language, setView, interviewData, setInterviewData, user }
         );
     }
 
+    const formatTime = (seconds) => {
+        if (!seconds) return "00:00";
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    };
+
     const { analysis } = interviewData;
 
     return React.createElement('div', { className: "animate-fade-in-up space-y-8" },
@@ -55,19 +62,25 @@ const ReviewView = ({ language, setView, interviewData, setInterviewData, user }
         ),
 
         React.createElement('div', { className: "grid md:grid-cols-3 gap-6" },
-            React.createElement('div', { className: "bg-white dark:bg-dark-card p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl flex flex-col items-center justify-center text-center" },
-                React.createElement('h3', { className: "text-sm font-bold text-brand-red uppercase mb-4" }, t.scoreLabel),
-                React.createElement('div', { className: "relative w-40 h-40 flex items-center justify-center" },
-                    React.createElement('svg', { className: "w-full h-full transform -rotate-90" },
-                        React.createElement('circle', { cx: "80", cy: "80", r: "70", fill: "transparent", stroke: "currentColor", strokeWidth: "8", className: "text-slate-100 dark:text-white/5" }),
-                        React.createElement('circle', {
-                            cx: "80", cy: "80", r: "70", fill: "transparent", stroke: "currentColor", strokeWidth: "8",
-                            strokeDasharray: 440,
-                            strokeDashoffset: 440 - (440 * analysis.score) / 100,
-                            className: "text-brand-red transition-all duration-1000"
-                        })
-                    ),
-                    React.createElement('span', { className: "absolute text-4xl font-extrabold" }, `${analysis.score}%`)
+            React.createElement('div', { className: "bg-white dark:bg-dark-card p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-xl flex flex-col items-center justify-center text-center space-y-6" },
+                React.createElement('div', { className: "w-full" },
+                    React.createElement('h3', { className: "text-sm font-bold text-brand-red uppercase mb-4" }, t.scoreLabel),
+                    React.createElement('div', { className: "relative w-40 h-40 mx-auto flex items-center justify-center" },
+                        React.createElement('svg', { className: "w-full h-full transform -rotate-90" },
+                            React.createElement('circle', { cx: "80", cy: "80", r: "70", fill: "transparent", stroke: "currentColor", strokeWidth: "8", className: "text-slate-100 dark:text-white/5" }),
+                            React.createElement('circle', {
+                                cx: "80", cy: "80", r: "70", fill: "transparent", stroke: "currentColor", strokeWidth: "8",
+                                strokeDasharray: 440,
+                                strokeDashoffset: 440 - (440 * analysis.score) / 100,
+                                className: "text-brand-red transition-all duration-1000"
+                            })
+                        ),
+                        React.createElement('span', { className: "absolute text-4xl font-extrabold" }, `${analysis.score}%`)
+                    )
+                ),
+                React.createElement('div', { className: "w-full pt-6 border-t border-slate-100 dark:border-white/5" },
+                    React.createElement('h3', { className: "text-xs font-bold text-slate-400 uppercase mb-2" }, t.sessionDuration),
+                    React.createElement('p', { className: "text-2xl font-mono font-bold text-brand-red" }, formatTime(interviewData.duration))
                 )
             ),
             React.createElement('div', { className: "md:col-span-2 space-y-6" },
