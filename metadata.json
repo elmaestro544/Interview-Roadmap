@@ -1,0 +1,8 @@
+{
+  "name": "Interview Roadmap",
+  "description": "AI-powered interview assessment platform with mock interviews, tailored questions, and real-time performance reviews.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
