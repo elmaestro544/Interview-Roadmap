@@ -1,15 +1,9 @@
 
 import { GoogleGenAI, Modality, Type } from "@google/genai";
 
-const getApiKey = () => {
-    if (typeof window !== 'undefined' && window.process && window.process.env) {
-        return window.process.env.VITE_API_KEY || window.process.env.API_KEY;
-    }
-    return undefined;
-};
-
-export const geminiApiKey = getApiKey();
-const ai = new GoogleGenAI({ apiKey: geminiApiKey });
+// Mandated initialization: Use process.env.API_KEY directly.
+// The environment is expected to provide this variable.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const MODEL_TEXT = 'gemini-3-flash-preview';
 const MODEL_AUDIO = 'gemini-2.5-flash-native-audio-preview-09-2025';
