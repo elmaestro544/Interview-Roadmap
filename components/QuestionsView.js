@@ -79,11 +79,11 @@ const QuestionsView = ({ language, setView, interviewData }) => {
                 
                 return React.createElement('div', {
                     key: i,
-                    className: "group bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-md hover:border-brand-red transition-all"
+                    className: "group bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-md hover:border-brand-green transition-all"
                 },
                     React.createElement('div', { className: "flex items-start gap-4" },
                         React.createElement('span', {
-                            className: "flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-brand-red/10 text-brand-red font-bold"
+                            className: "flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-brand-green/10 text-brand-green font-bold"
                         }, i + 1),
                         React.createElement('div', { className: "flex-grow" },
                             React.createElement('div', { className: "flex justify-between items-start mb-4 gap-4" },
@@ -92,8 +92,8 @@ const QuestionsView = ({ language, setView, interviewData }) => {
                                     onClick: () => handleListen(q.question, qKey),
                                     className: `p-2 rounded-full transition-all flex-shrink-0 ${
                                         playingKey === qKey 
-                                        ? 'bg-brand-red text-white scale-110' 
-                                        : 'bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-brand-red'
+                                        ? 'bg-brand-green text-white scale-110' 
+                                        : 'bg-slate-100 dark:bg-white/5 text-slate-400 hover:text-brand-green'
                                     }`
                                 }, 
                                     loadingKey === qKey ? React.createElement(Spinner, { size: "4" }) :
@@ -103,15 +103,15 @@ const QuestionsView = ({ language, setView, interviewData }) => {
                             
                             React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-4" },
                                 // STAR Tip
-                                React.createElement('div', { className: "bg-slate-50 dark:bg-dark-bg p-4 rounded-xl border-l-4 border-brand-red relative" },
+                                React.createElement('div', { className: "bg-slate-50 dark:bg-dark-bg p-4 rounded-xl border-l-4 border-brand-green relative" },
                                     React.createElement('div', { className: "flex justify-between items-start mb-1" },
-                                        React.createElement('p', { className: "text-[10px] font-black text-brand-red uppercase tracking-widest" }, t.starMethod),
+                                        React.createElement('p', { className: "text-[10px] font-black text-brand-green uppercase tracking-widest" }, t.starMethod),
                                         React.createElement('button', {
                                             onClick: () => handleListen(q.tip, tKey),
                                             className: `p-1.5 rounded-full transition-all ${
                                                 playingKey === tKey 
-                                                ? 'bg-brand-red text-white' 
-                                                : 'text-slate-400 hover:text-brand-red'
+                                                ? 'bg-brand-green text-white' 
+                                                : 'text-slate-400 hover:text-brand-green'
                                             }`
                                         }, 
                                             loadingKey === tKey ? React.createElement(Spinner, { size: "3" }) :
@@ -122,15 +122,15 @@ const QuestionsView = ({ language, setView, interviewData }) => {
                                 ),
 
                                 // Suggested Answer
-                                React.createElement('div', { className: "bg-orange-50 dark:bg-orange-950/20 p-4 rounded-xl border-l-4 border-orange-400 relative" },
+                                React.createElement('div', { className: "bg-blue-50 dark:bg-blue-900/10 p-4 rounded-xl border-l-4 border-brand-blue relative" },
                                     React.createElement('div', { className: "flex justify-between items-start mb-1" },
-                                        React.createElement('p', { className: "text-[10px] font-black text-orange-500 uppercase tracking-widest" }, t.suggestedAnswer),
+                                        React.createElement('p', { className: "text-[10px] font-black text-brand-blue uppercase tracking-widest" }, t.suggestedAnswer),
                                         React.createElement('button', {
                                             onClick: () => handleListen(q.suggestedAnswer, aKey),
                                             className: `p-1.5 rounded-full transition-all ${
                                                 playingKey === aKey 
-                                                ? 'bg-orange-500 text-white' 
-                                                : 'text-slate-400 hover:text-orange-500'
+                                                ? 'bg-brand-blue text-white' 
+                                                : 'text-slate-400 hover:text-brand-blue'
                                             }`
                                         }, 
                                             loadingKey === aKey ? React.createElement(Spinner, { size: "3" }) :
@@ -151,11 +151,11 @@ const QuestionsView = ({ language, setView, interviewData }) => {
         React.createElement('div', { className: "flex justify-between mt-12" },
             React.createElement('button', {
                 onClick: () => setView(AppView.Setup),
-                className: "text-slate-500 hover:text-brand-red font-bold px-8 py-3 transition-colors"
+                className: "text-slate-500 hover:text-brand-green font-bold px-8 py-3 transition-colors"
             }, t.back),
             React.createElement('button', {
                 onClick: () => setView(AppView.MockInterview),
-                className: "bg-brand-red hover:bg-red-600 text-white font-bold px-12 py-3 rounded-full transition-all shadow-lg hover:shadow-brand-red/30"
+                className: "bg-brand-green hover:bg-green-600 text-white font-bold px-12 py-3 rounded-full transition-all shadow-lg hover:shadow-green-500/30"
             }, t.navMock)
         )
     );

@@ -58,10 +58,10 @@ const HistoryView = ({ language, setView, setInterviewData, user }) => {
             interviews.map((item) => (
                 React.createElement('div', {
                     key: item.id,
-                    className: "bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex justify-between items-center shadow-md hover:border-brand-red transition-all"
+                    className: "bg-white dark:bg-dark-card p-6 rounded-2xl border border-slate-200 dark:border-white/10 flex justify-between items-center shadow-md hover:border-brand-green transition-all"
                 },
                     React.createElement('div', { className: "flex-grow pr-4" },
-                        React.createElement('p', { className: "text-xs font-bold text-brand-red uppercase mb-1" }, new Date(item.created_at).toLocaleDateString(language, { dateStyle: 'long' })),
+                        React.createElement('p', { className: "text-xs font-bold text-brand-green uppercase mb-1" }, new Date(item.created_at).toLocaleDateString(language, { dateStyle: 'long' })),
                         React.createElement('h3', { className: "text-xl font-bold truncate max-w-md" }, item.job_desc.substring(0, 60) + '...'),
                         React.createElement('div', { className: "flex items-center gap-4 mt-1" },
                             React.createElement('p', { className: "text-sm text-slate-500 font-semibold" }, `Score: ${item.analysis?.score}%`),
@@ -70,7 +70,7 @@ const HistoryView = ({ language, setView, setInterviewData, user }) => {
                     ),
                     React.createElement('button', {
                         onClick: () => handleViewDetails(item),
-                        className: "bg-slate-200 dark:bg-white/5 py-2 px-6 rounded-full font-bold text-sm hover:bg-brand-red hover:text-white transition-all flex-shrink-0"
+                        className: "bg-slate-200 dark:bg-white/5 py-2 px-6 rounded-full font-bold text-sm hover:bg-brand-green hover:text-white transition-all flex-shrink-0"
                     }, t.viewDetails)
                 )
             ))

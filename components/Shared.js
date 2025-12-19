@@ -3,7 +3,7 @@ import React from 'react';
 
 export const Spinner = ({ size = '8' }) => (
   React.createElement('div', {
-    className: `animate-spin rounded-full h-${size} w-${size} border-b-2 border-t-2 border-brand-red`
+    className: `animate-spin rounded-full h-${size} w-${size} border-b-2 border-t-2 border-brand-green`
   })
 );
 
@@ -94,7 +94,7 @@ export const MoonIcon = ({ className = 'w-6 h-6' }) => (
 
 export const Logo = () => (
     React.createElement('img', {
-        src: "https://i.imgur.com/3urddbC.jpeg",
+        src: "https://i.imgur.com/xOwC1fv.png",
         alt: "Job Interview Logo",
         className: "h-10 w-auto rounded-lg"
     })
@@ -114,7 +114,7 @@ export const HighlightText = ({ text, className = "" }) => {
                 const inner = part.slice(2, -2);
                 return React.createElement('span', { 
                     key: i, 
-                    className: "font-black text-brand-red bg-brand-red/5 px-1 rounded" 
+                    className: "font-black text-brand-green bg-brand-green/5 px-1 rounded" 
                 }, inner);
             }
             return part;

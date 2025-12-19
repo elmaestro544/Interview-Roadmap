@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +21,9 @@
     
     <style>
         :root {
-            --brand-red: #ef4444;
-            --brand-blue: #00205B;
+            --brand-green: #76da2a;
+            --brand-navy: #162e55;
+            --brand-blue-light: #3b82f6;
         }
         
         body {
@@ -29,23 +31,66 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background: linear-gradient(-45deg, #f8fafc, #f1f5f9, #cbd5e1, #f1f5f9);
-            background-size: 400% 400%;
-            animation: gradient-flow 20s ease infinite;
-            background-attachment: fixed;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.5s ease;
         }
 
         .dark body {
-            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #020617);
-            background-size: 400% 400%;
-            animation: gradient-flow 20s ease infinite;
-            background-attachment: fixed;
+            background-color: #0B0F19; 
         }
 
-        @keyframes gradient-flow {
+        /* Dual Layer Background Containers */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity 0.8s ease, background 0.8s ease;
+        }
+
+        /* Layer 1: The Main Animated Moving Gradient using Logo Navy */
+        body::before {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe, #f1f5f9, #f8fafc);
+            background-size: 400% 400%;
+            animation: gradient-move-x 25s ease infinite;
+        }
+
+        .dark body::before {
+            background: linear-gradient(-135deg, #0B0F19, #162e55, #0a192f, #0B0F19);
+            background-size: 400% 400%;
+        }
+
+        /* Layer 2: Top & Bottom Backlight Glows + Pulse using Logo Green and Blue */
+        body::after {
+            background: 
+                radial-gradient(circle at 50% -15%, rgba(118, 218, 42, 0.1), transparent 60%),
+                radial-gradient(circle at 50% 115%, rgba(59, 130, 246, 0.08), transparent 60%);
+            background-size: 200% 200%;
+            animation: gradient-move-y 18s ease-in-out infinite alternate;
+        }
+
+        .dark body::after {
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(118, 218, 42, 0.15), transparent 70%),
+                radial-gradient(circle at 50% 120%, rgba(59, 130, 246, 0.12), transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(22, 46, 85, 0.3), transparent 50%);
+            background-size: 200% 200%;
+            mix-blend-mode: lighten;
+        }
+
+        @keyframes gradient-move-x {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        @keyframes gradient-move-y {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
         }
 
         @keyframes fade-in-up {
@@ -60,20 +105,15 @@
             width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(239, 68, 68, 0.3);
+            background: rgba(118, 218, 42, 0.2);
             border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(239, 68, 68, 0.6);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
+            background: rgba(118, 218, 42, 0.4);
         }
     </style>
     <script>
@@ -85,10 +125,12 @@
               sans: ['Cairo', 'sans-serif'],
             },
             colors: {
-              'brand-red': '#ef4444',
-              'brand-blue': '#00205B',
-              'dark-bg': '#020617',
-              'dark-card': '#0f172a',
+              'brand-green': '#76da2a',
+              'brand-navy': '#162e55',
+              'brand-blue': '#3b82f6',
+              'dark-bg': '#0B0F19',
+              'dark-card': '#111827',
+              'dark-sidebar': '#1F2937',
             }
           }
         }
@@ -100,7 +142,7 @@
     </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body>
+<body class="dark:bg-dark-bg">
     <div id="root"></div>
     <script type="importmap">
 {
