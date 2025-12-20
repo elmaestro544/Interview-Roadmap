@@ -33,6 +33,15 @@ export const JOB_TEMPLATES = [
     }
   },
   {
+    id: 'risk_manager',
+    title: { en: 'Risk Manager', ar: 'مدير مخاطر' },
+    icon: '🛡️',
+    content: {
+      en: "We are seeking a proactive Risk Manager to lead our risk identification and mitigation efforts.\n\nKey Responsibilities:\n- Perform comprehensive risk assessments and qualitative/quantitative analysis.\n- Develop and implement robust risk mitigation strategies and contingency plans.\n- Establish risk monitoring protocols and reporting frameworks for senior management.\n- Evaluate the effectiveness of internal controls and compliance procedures.\n\nRequirements:\n- Extensive experience in risk management or project controls.\n- Proficiency in risk analysis tools and methodologies (e.g., Monte Carlo simulation).\n- Strong communication and stakeholder management skills.",
+      ar: "نحن نبحث عن مدير مخاطر استباقي لقيادة جهود تحديد المخاطر والتخفيف منها.\n\nالمسؤوليات الرئيسية:\n- إجراء تقييمات شاملة للمخاطر والتحليل النوعي والكمي.\n- تطوير وتنفيذ استراتيجيات قوية للتخفيف من المخاطر وخطط الطوارئ.\n- وضع بروتوكولات لمراقبة المخاطر وأطر إعداد التقارير للإدارة العليا.\n- تقييم فعالية الضوابط الداخلية وإجراءات الامتثال.\n\nالمتطلبات:\n- خبرة واسعة في إدارة المخاطر أو ضوابط المشروع.\n- إتقان أدوات ومنهجيات تحليل المخاطر (مثل محاكاة مونت كارلو).\n- مهارات تواصل قوية وإدارة أصحاب المصلحة."
+    }
+  },
+  {
     id: 'software_engineer',
     title: { en: 'Software Engineer', ar: 'مهندس برمجيات' },
     icon: '💻',

@@ -217,12 +217,16 @@ const MockInterviewView = ({ language, setView, interviewData, setInterviewData 
 
                     React.createElement('div', { className: "flex flex-col items-center gap-8 mb-10" },
                         React.createElement('div', {
-                            className: `w-40 h-40 rounded-full border-4 overflow-hidden ${isInterviewerSpeaking ? 'border-brand-green animate-pulse shadow-[0_0_40px_rgba(118,218,42,0.3)]' : 'border-slate-300 dark:border-slate-700'} flex items-center justify-center bg-slate-100 dark:bg-dark-bg transition-all duration-500`
+                            className: `w-40 h-40 rounded-full border-4 overflow-hidden ${isInterviewerSpeaking ? 'border-brand-green animate-pulse shadow-[0_0_40px_rgba(118,218,42,0.3)]' : 'border-slate-300 dark:border-slate-700'} flex items-center justify-center bg-slate-200 dark:bg-dark-bg transition-all duration-500 relative shadow-inner`
                         },
                             React.createElement('img', { 
-                                src: "https://i.imgur.com/c2SAKnF.png", 
+                                src: "https://i.imgur.com/JGqCpGM.png", 
                                 alt: "Interviewer Avatar",
-                                className: `w-full h-full object-cover transition-transform duration-500 ${isInterviewerSpeaking ? 'scale-110' : 'scale-100 opacity-90'}`
+                                className: `w-full h-full object-cover transition-transform duration-500 ${isInterviewerSpeaking ? 'scale-110' : 'scale-100 opacity-90'}`,
+                                onError: (e) => {
+                                    // Robust fallback if the provided Imgur ID is indeed broken
+                                    e.target.src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=ProfessionalRecruiter';
+                                }
                             })
                         ),
                         React.createElement('div', { className: "text-center" },
